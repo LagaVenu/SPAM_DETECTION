@@ -1,80 +1,113 @@
-# Spam Mail Detection using BERT
+# Email Spam Detection System
 
-This project implements a robust spam mail detection system using BERT (Bidirectional Encoder Representations from Transformers) for natural language processing. The system can effectively classify emails as spam or non-spam with high accuracy.
+A robust email spam detection system using BERT and Flask, with a React frontend.
 
 ## Features
 
-- BERT-based email classification
-- Training and prediction scripts
-- Email preprocessing and feature extraction
-- High accuracy spam detection
+- Advanced spam detection using BERT model
+- User authentication and authorization
+- Real-time email content analysis
+- Confidence scoring for predictions
+- Modern and responsive UI
 
-## Prerequisites
+## Project Structure
 
-- Python 3.8 or higher
-- pip (Python package installer)
-
-## Installation
-
-1. Clone this repository:
-```bash
-git clone https://github.com/bhargavak04/Spam_Detection_BERT_Enron.git
-cd Spam_Mail_Robust
+```
+.
+├── frontend/              # React frontend application
+│   ├── src/
+│   │   ├── components/   # React components
+│   │   ├── App.js        # Main application component
+│   │   └── index.js      # Entry point
+│   └── package.json      # Frontend dependencies
+├── backend/              # Flask backend
+│   ├── app.py           # Main Flask application
+│   ├── predict_spam.py  # Spam detection model
+│   └── requirements.txt # Python dependencies
+├── saved_model/         # Trained model files
+└── README.md           # Project documentation
 ```
 
-2. Create and activate a virtual environment:
+## Setup Instructions
+
+### Backend Setup
+
+1. Create and activate a virtual environment:
 ```bash
-python -m venv env
-source env/bin/activate  # On Windows: env\Scripts\activate
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-3. Install the required packages:
+2. Install Python dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-## BERT Model
-
-The project uses the BERT model from Hugging Face. You can download the pre-trained BERT model from:
-```
-https://huggingface.co/bert-base-uncased
-```
-
-The model will be automatically downloaded when you run the training script for the first time.
-
-## Usage
-
-### Training
-
-To train the model:
+3. Start the Flask server:
 ```bash
-python train_bert_spam.py
+python app.py
 ```
 
-### Prediction
+The backend server will run on http://localhost:5000
 
-To predict whether an email is spam or not:
+### Frontend Setup
+
+1. Navigate to the frontend directory:
 ```bash
-python predict_spam.py
+cd frontend
 ```
 
-## Project Structure
+2. Install Node.js dependencies:
+```bash
+npm install
+```
 
-- `train_bert_spam.py`: Script for training the BERT model
-- `predict_spam.py`: Script for making predictions
-- `mail.py`: Core functionality for email processing
-- `requirements.txt`: List of required Python packages
-- `saved_model/`: Directory for storing trained models
+3. Start the development server:
+```bash
+npm start
+```
+
+The frontend will run on http://localhost:3000
+
+## API Endpoints
+
+- `POST /api/register` - User registration
+- `POST /api/login` - User login
+- `POST /api/check-email` - Spam detection (requires authentication)
+
+## Dependencies
+
+### Backend
+- Flask 2.3.3
+- PyTorch 2.2.1
+- Transformers 4.36.2
+- NumPy 2.2.4
+- scikit-learn 1.6.1
+- Other dependencies listed in requirements.txt
+
+### Frontend
+- React
+- Material-UI
+- Axios
+- React Router
+- Other dependencies listed in package.json
+
+## Security
+
+- JWT-based authentication
+- Password hashing with bcrypt
+- CORS protection
+- Input validation
+- Secure session management
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Hugging Face for the BERT implementation
-- Transformers library for making BERT accessible 
+This project is licensed under the MIT License - see the LICENSE file for details. 

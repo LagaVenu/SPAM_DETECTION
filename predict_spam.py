@@ -29,13 +29,23 @@ class SpamDetector:
         with torch.no_grad():
             outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
             logits = outputs.logits
-            _, prediction = torch.max(logits, dim=1)
+            probabilities = torch.softmax(logits, dim=1)
+            prediction = torch.argmax(probabilities, dim=1)
+            confidence = probabilities[0][prediction].item()
 
-        return 'spam' if prediction.item() == 1 else 'ham'
+        return prediction.item() == 1, confidence
+
+# Create a global instance of the detector
+detector = SpamDetector()
+
+def predict_spam(text):
+    """
+    Function that app.py expects to use for spam detection.
+    Returns a tuple of (is_spam, confidence)
+    """
+    return detector.predict(text)
 
 if __name__ == '__main__':
-    detector = SpamDetector()
-    
     # Test examples
     test_emails = [
         "Congratulations! You've won a free iPhone! Click here to claim now!",  # Spam
@@ -46,5 +56,6 @@ if __name__ == '__main__':
 
     for email in test_emails:
         print(f"Email: {email[:60]}...")
-        print(f"Prediction: {detector.predict(email)}")
+        is_spam, confidence = predict_spam(email)
+        print(f"Prediction: {'spam' if is_spam else 'ham'} (confidence: {confidence:.2f})")
         print("-" * 50)

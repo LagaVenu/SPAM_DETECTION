@@ -3,7 +3,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import torch
 from torch.utils.data import Dataset, DataLoader
-from transformers import BertTokenizer, BertForSequenceClassification, AdamW, get_linear_schedule_with_warmup
+from torch.optim import AdamW
+from transformers import BertTokenizer, BertForSequenceClassification, get_linear_schedule_with_warmup
 from tqdm import tqdm
 import os
 
@@ -12,9 +13,11 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # 1. Load and prepare dataset
 def load_data(file_path='spam.csv'):
+    # Read the dataset with tab separator and no header
     df = pd.read_csv(file_path, encoding='latin-1')
     df = df[['v1', 'v2']]  # Use columns: label (v1) and text (v2)
     df.columns = ['label', 'text']
+    # Convert labels to binary (0 for ham, 1 for spam)
     df['label'] = df['label'].map({'ham': 0, 'spam': 1})
     return df
 
@@ -57,8 +60,12 @@ def train_model():
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
 
     # Initialize tokenizer and model
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=2).to(device)
+    model_name = 'bert-base-uncased'
+    tokenizer = BertTokenizer.from_pretrained(model_name)
+    model = BertForSequenceClassification.from_pretrained(
+        model_name,
+        num_labels=2
+    ).to(device)
 
     # Create data loaders
     MAX_LEN = 128
